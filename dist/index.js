@@ -43,6 +43,31 @@ function hasNewCard(preValue, currentValue) {
   return currentValue - preValue;
 }
 
+// src/features/createNotification/notification.ts
+var Notify = class {
+  constructor(name) {
+    this.name = name;
+  }
+  notification() {
+    new Notification(this.name);
+  }
+  static verifyNotification() {
+    if ("Notification" in window) {
+      if (Notification.permission === "denied") {
+        alert("Voc\xEA precisa habilitar as notifica\xE7\xF5es");
+      } else if (Notification.permission === "default") {
+        Notification.requestPermission().then((res) => {
+          if (res === "denied") {
+            alert("Voc\xEA precisa habilitar as notifica\xE7\xF5es");
+          }
+        });
+      }
+    } else {
+      alert("Seu nabegador n\xE3o suporta notifica\xE7\xF5es.");
+    }
+  }
+};
+
 // src/features/main.ts
 var MainFeature = class {
   constructor(idBoard, token, apiKey) {
@@ -64,7 +89,13 @@ var MainFeature = class {
               const hasCard = hasNewCard(prevValue, currentValue);
               if (hasCard > 0) {
                 const newCards = currentBoard.slice(-hasCard);
-                newCards.forEach((card) => console.log(card));
+                newCards.forEach((card) => {
+                  const notify = new Notify(card.name);
+                  notify.notification();
+                  console.log(card);
+                });
+                prevValue = currentValue;
+              } else if (hasCard < 0) {
                 prevValue = currentValue;
               }
             }
@@ -84,6 +115,7 @@ var inputIdBoard = document.querySelector("#idBoard");
 var tokenBoard = document.querySelector("#tokenBoard");
 var keyBoard = document.querySelector("#keyBoard");
 var startbutton = document.querySelector("#startBtn");
+Notify.verifyNotification();
 startbutton.addEventListener("click", () => {
   const initialize = new MainFeature(inputIdBoard.value, tokenBoard.value, keyBoard.value);
   initialize.start();

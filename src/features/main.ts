@@ -1,5 +1,6 @@
 import RequestBoard from "./request/request";
 import hasNewCard from "./hasNewCard/hasNewCard";
+import Notify from "./createNotification/notification";
 
 export default class MainFeature {
     idBoard: string;
@@ -24,7 +25,13 @@ export default class MainFeature {
                         const hasCard = hasNewCard(prevValue, currentValue);
                         if (hasCard > 0) {
                             const newCards = currentBoard.slice(-hasCard);
-                            newCards.forEach(card => console.log(card));
+                            newCards.forEach(card => {
+                                const notify = new Notify(card.name);
+                                notify.notification();
+                                console.log(card);
+                            });
+                            prevValue = currentValue;
+                        } else if (hasCard < 0) {
                             prevValue = currentValue;
                         }
                     }
