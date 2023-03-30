@@ -1,4 +1,5 @@
 import RequestBoard from "./request/request";
+import hasNewCard from "./hasNewCard/hasNewCard";
 
 export default class MainFeature {
     idBoard: string;
@@ -9,6 +10,16 @@ export default class MainFeature {
     async start() {
         const req = new RequestBoard(this.idBoard);
         const response = await req.getBoard();
-        console.log(response);
+        let prevValue = response.length;
+        setInterval(async () => {
+            const currentBoard = await req.getBoard();
+            const currentValue = currentBoard.length;
+            const hasCard = hasNewCard(prevValue, currentValue);
+            if (hasCard > 0) {
+                const newCards = currentBoard.slice(-hasCard);
+                newCards.forEach(card => console.log(card));
+                prevValue = currentValue;
+            }
+        }, 5000);
     }
 } 
