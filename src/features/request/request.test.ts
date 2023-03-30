@@ -1,10 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
 import RequestBoard from './request';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-const requestBoard = new RequestBoard('m7sqPiYX');
+const requestBoard = new RequestBoard('m7sqPiYX', process.env.TOKEN ?? '', process.env.API_KEY ?? '');
 
 describe('Request', async () => {
-    
+
     it('Should return the board with 4 fields and sorted', async () => {
         const spy = vi.spyOn(requestBoard, 'getBoard');
         const expected = [
