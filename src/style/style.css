@@ -1,0 +1,54 @@
+.container {
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    height: 90vh;
+    margin: auto;
+    /* background-color: black; */
+}
+
+.id,
+.token,
+.key {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    width: 100%;
+}
+
+#idBoard,
+#tokenBoard,
+#keyBoard {
+    padding: 0.5rem;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid rgb(185, 182, 182);
+}
+
+#startBtn{
+    padding: 0.5rem;
+    background-color: transparent;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 20%;
+    border-radius: 5px;
+}
+
+#startBtn:hover {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.error {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(230, 51, 51);
+    font-weight: bold;
+    color: white;
+}

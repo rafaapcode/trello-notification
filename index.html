@@ -4,14 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="./src//style/style.css">
+    <title>Notifcação</title>
 </head>
 <body>
     <div class="container">
-        ID <input id="idBoard" type="text">
-        TOKEN <input id="tokenBoard" type="password">
-        KEY <input id="keyBoard" type="password">
+        <div class="id">
+            <label for="idBoard">ID Quadro :</label>
+            <input id="idBoard" type="text">
+        </div>
+        <div class="token">
+            <label for="tokenBoard">Token :</label>
+            <input id="tokenBoard" type="password">
+        </div>
+        <div class="key">
+            <label for="keyBoard">Key :</label>
+            <input id="keyBoard" type="password">
+        </div>
+    
         <button id="startBtn">Start</button>
+        <p class="error hidden"></p>
     </div>
     <script type="module" src="./dist/index.js"></script>
 </body>

@@ -115,8 +115,15 @@ var inputIdBoard = document.querySelector("#idBoard");
 var tokenBoard = document.querySelector("#tokenBoard");
 var keyBoard = document.querySelector("#keyBoard");
 var startbutton = document.querySelector("#startBtn");
+var erro = document.querySelector(".error");
 Notify.verifyNotification();
 startbutton.addEventListener("click", () => {
+  if (!inputIdBoard.value || !tokenBoard.value || !keyBoard.value) {
+    erro.classList.remove("hidden");
+    erro.innerHTML = "Preencha todos os campos !";
+  } else {
+    erro.classList.add("hidden");
+  }
   const initialize = new MainFeature(inputIdBoard.value, tokenBoard.value, keyBoard.value);
   initialize.start();
 });
