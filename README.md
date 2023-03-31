@@ -9,7 +9,7 @@
 - CSS
 
 ## Como Usar
-- Primeiro instale as dependências, usando o ````npm install```
+- Primeiro instale as dependências, usando o ```npm install```
 - Após isso faça a compilação do typescript, usando o```npm run build```
 - Pronto, agora só abra o arquivo HTML e preencha os campos com o ID do Quadro, Token e KEY do seu trello.
 
