@@ -52,3 +52,11 @@
     font-weight: bold;
     color: white;
 }
+
+.ok {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(7, 150, 7);
+    font-weight: bold;
+    color: white;
+}
