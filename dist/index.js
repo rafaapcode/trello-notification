@@ -75,37 +75,42 @@ var MainFeature = class {
     this.token = token;
     this.api_key = apiKey;
   }
-  start(stop = false) {
+  start() {
     return __async(this, null, function* () {
-      if (!stop) {
-        const req = new RequestBoard(this.idBoard, this.token, this.api_key);
-        const response = yield req.getBoard();
-        if (Array.isArray(response)) {
-          let prevValue = response.length;
-          setInterval(() => __async(this, null, function* () {
-            const currentBoard = yield req.getBoard();
-            if (Array.isArray(currentBoard)) {
-              const currentValue = currentBoard.length;
-              const hasCard = hasNewCard(prevValue, currentValue);
-              if (hasCard > 0) {
-                const newCards = currentBoard.slice(-hasCard);
-                newCards.forEach((card) => {
-                  const notify = new Notify(card.name);
-                  notify.notification();
-                  console.log(card);
-                });
-                prevValue = currentValue;
-              } else if (hasCard < 0) {
-                prevValue = currentValue;
-              }
+      const req = new RequestBoard(this.idBoard, this.token, this.api_key);
+      const response = yield req.getBoard();
+      if (Array.isArray(response)) {
+        let prevValue = response.length;
+        setInterval(() => __async(this, null, function* () {
+          const currentBoard = yield req.getBoard();
+          if (Array.isArray(currentBoard)) {
+            const currentValue = currentBoard.length;
+            const hasCard = hasNewCard(prevValue, currentValue);
+            if (hasCard > 0) {
+              const newCards = currentBoard.slice(-hasCard);
+              newCards.forEach((card) => {
+                const notify = new Notify(card.name);
+                notify.notification();
+                console.log(card);
+              });
+              prevValue = currentValue;
+            } else if (hasCard < 0) {
+              prevValue = currentValue;
             }
-          }), 5e3);
-        } else {
-          return response;
-        }
+          }
+        }), 5e3);
       } else {
-        return;
+        return response;
       }
+    });
+  }
+  verifyRequest() {
+    return __async(this, null, function* () {
+      const response = this.start();
+      if (!Array.isArray(response)) {
+        return response;
+      }
+      return false;
     });
   }
 };
@@ -115,15 +120,32 @@ var inputIdBoard = document.querySelector("#idBoard");
 var tokenBoard = document.querySelector("#tokenBoard");
 var keyBoard = document.querySelector("#keyBoard");
 var startbutton = document.querySelector("#startBtn");
-var erro = document.querySelector(".error");
+var mensagem = document.querySelector(".mensagem");
 Notify.verifyNotification();
 startbutton.addEventListener("click", () => {
   if (!inputIdBoard.value || !tokenBoard.value || !keyBoard.value) {
-    erro.classList.remove("hidden");
-    erro.innerHTML = "Preencha todos os campos !";
+    mensagem.classList.remove("hidden");
+    mensagem.classList.remove("ok");
+    mensagem.classList.add("error");
+    mensagem.innerHTML = "Preencha todos os campos !";
+    return;
   } else {
-    erro.classList.add("hidden");
+    mensagem.classList.add("hidden");
+    mensagem.classList.remove("error");
+    mensagem.classList.remove("ok");
   }
   const initialize = new MainFeature(inputIdBoard.value, tokenBoard.value, keyBoard.value);
-  initialize.start();
+  initialize.verifyRequest().then((response) => {
+    if (response) {
+      mensagem.classList.remove("hidden");
+      mensagem.classList.remove("ok");
+      mensagem.classList.add("error");
+      mensagem.innerHTML = `${response}`;
+    } else {
+      mensagem.classList.remove("hidden");
+      mensagem.classList.remove("error");
+      mensagem.classList.add("ok");
+      mensagem.innerHTML = "Executando ...";
+    }
+  });
 });

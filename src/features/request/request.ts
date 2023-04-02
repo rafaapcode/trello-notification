@@ -14,7 +14,6 @@ export default class RequestBoard {
             return response.map((card: any) => ({ name: card.name, desc: card.desc, idShort: card.idShort })).sort((a: IBoard, b: IBoard) => a.idShort - b.idShort);
         } catch (error) {
             return 'Quadro não existe';
-
         }
     }
 
