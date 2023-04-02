@@ -5,6 +5,7 @@ const inputIdBoard = document.querySelector('#idBoard') as HTMLInputElement;
 const tokenBoard = document.querySelector('#tokenBoard') as HTMLInputElement;
 const keyBoard = document.querySelector('#keyBoard') as HTMLInputElement;
 const startbutton = document.querySelector('#startBtn') as HTMLButtonElement;
+const stopbutton = document.querySelector('#stopBtn') as HTMLButtonElement;
 const mensagem = document.querySelector('.mensagem') as HTMLParagraphElement;
 
 Notify.verifyNotification();
@@ -32,8 +33,13 @@ startbutton.addEventListener('click', () => {
             mensagem.classList.remove('hidden');
             mensagem.classList.remove('error');
             mensagem.classList.add('ok');
-            mensagem.innerHTML = 'Executando ...'
+            mensagem.innerHTML = 'Executando ...';
+            startbutton.classList.add('hidden');
         }
     });
+});
+
+stopbutton.addEventListener('click', () => {
+    window.location.reload();
 })
 

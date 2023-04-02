@@ -120,6 +120,7 @@ var inputIdBoard = document.querySelector("#idBoard");
 var tokenBoard = document.querySelector("#tokenBoard");
 var keyBoard = document.querySelector("#keyBoard");
 var startbutton = document.querySelector("#startBtn");
+var stopbutton = document.querySelector("#stopBtn");
 var mensagem = document.querySelector(".mensagem");
 Notify.verifyNotification();
 startbutton.addEventListener("click", () => {
@@ -146,6 +147,10 @@ startbutton.addEventListener("click", () => {
       mensagem.classList.remove("error");
       mensagem.classList.add("ok");
       mensagem.innerHTML = "Executando ...";
+      startbutton.classList.add("hidden");
     }
   });
+});
+stopbutton.addEventListener("click", () => {
+  window.location.reload();
 });
