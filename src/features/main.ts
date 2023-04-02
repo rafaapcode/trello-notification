@@ -27,7 +27,6 @@ export default class MainFeature {
                         newCards.forEach(card => {
                             const notify = new Notify(card.name);
                             notify.notification();
-                            console.log(card);
                         });
                         prevValue = currentValue;
                     } else if (hasCard < 0) {

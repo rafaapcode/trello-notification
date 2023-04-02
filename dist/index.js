@@ -49,7 +49,7 @@ var Notify = class {
     this.name = name;
   }
   notification() {
-    new Notification(this.name);
+    new Notification(this.name, { image: "../../assets/img/trello-logo.png" });
   }
   static verifyNotification() {
     if ("Notification" in window) {
@@ -91,7 +91,6 @@ var MainFeature = class {
               newCards.forEach((card) => {
                 const notify = new Notify(card.name);
                 notify.notification();
-                console.log(card);
               });
               prevValue = currentValue;
             } else if (hasCard < 0) {
