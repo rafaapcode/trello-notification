@@ -1,5 +1,7 @@
 import MainFeature from "./features/main";
 import Notify from './features/createNotification/notification';
+import RepositoryDb from "./features/repository/repository";
+import LocalStorageCache from "./features/db/localStorage";
 
 const inputIdBoard = document.querySelector('#idBoard') as HTMLInputElement;
 const tokenBoard = document.querySelector('#tokenBoard') as HTMLInputElement;
@@ -9,6 +11,18 @@ const stopbutton = document.querySelector('#stopBtn') as HTMLButtonElement;
 const mensagem = document.querySelector('.mensagem') as HTMLParagraphElement;
 
 Notify.verifyNotification();
+const cacheRepository = new RepositoryDb(LocalStorageCache);
+const isCached = cacheRepository.getValue(0);
+if (isCached) {
+    const { idBoard, key, token } = isCached;
+    inputIdBoard.value = idBoard;
+    keyBoard.value = key;
+    tokenBoard.value = token;
+} else {
+    inputIdBoard.innerText = '';
+    keyBoard.innerText = '';
+    tokenBoard.innerText = '';
+}
 
 startbutton.addEventListener('click', () => {
     if (!inputIdBoard.value || !tokenBoard.value || !keyBoard.value) {
@@ -30,6 +44,7 @@ startbutton.addEventListener('click', () => {
             mensagem.classList.add('error');
             mensagem.innerHTML = `${response}`;
         } else {
+            cacheRepository.create({ id: 0, idBoard: inputIdBoard.value, key: keyBoard.value, token: tokenBoard.value });
             mensagem.classList.remove('hidden');
             mensagem.classList.remove('error');
             mensagem.classList.add('ok');

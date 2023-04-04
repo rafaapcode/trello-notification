@@ -7,7 +7,7 @@ class DbInMemory extends BaseCacheDatabase {
         super();
     }
 
-    get lengthDatabase(): number {
+    lenthDb(): number {
         return this.database.length;
     }
 
@@ -20,13 +20,13 @@ class DbInMemory extends BaseCacheDatabase {
         this.database.push(data);
     }
 
-    delete(id: string): void {
-        const index = this.database.findIndex(data => data.idBoard === id);
+    delete(id: number): void {
+        const index = this.database.findIndex(data => Number(data.id) === id);
         this.database.splice(index, 1);
     }
 
-    getValue(id: string): IChacheData | null {
-        const index =  this.database.findIndex(data => data.idBoard === id);
+    getValue(id: number): IChacheData | null {
+        const index =  this.database.findIndex(data => Number(data.id) === id);
         if(index === -1) {
             return null;
         }

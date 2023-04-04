@@ -8,13 +8,17 @@ export default class RepositoryDb extends BaseCacheDatabase {
         this.databaseCache = databaseCache;
     }
 
+    lenthDb(): number {
+        return this.databaseCache.lenthDb();
+    }
+
     create(data: IChacheData): void {
         this.databaseCache.create(data);
     }
-    delete(id: string): void {
+    delete(id: number): void {
         this.databaseCache.delete(id);
     }
-    getValue(id: string): IChacheData | null {
+    getValue(id: number): IChacheData | null {
         return this.databaseCache.getValue(id);
     }
 }

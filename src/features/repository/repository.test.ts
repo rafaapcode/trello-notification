@@ -16,29 +16,29 @@ describe('Repository', () => {
 
     it('Should storage a new item', () => {
         const sut = makeSut();
-        const mock: IChacheData = { idBoard: '123', key: '12391341074101h190h19', token: 'obasibfipabf912gh9bc9gr01vb3' };
+        const mock: IChacheData = { id: 0, idBoard: '123', key: '12391341074101h190h19', token: 'obasibfipabf912gh9bc9gr01vb3' };
         sut.create(mock);
-        expect(DbInMemory.lengthDatabase).toBe(1);
+        expect(DbInMemory.lenthDb()).toBe(1);
     })
 
     it('Should return a item', () => {
         const sut = makeSut();
-        const mock: IChacheData = { idBoard: '123', key: '12391341074101h190h19', token: 'obasibfipabf912gh9bc9gr01vb3' };
-        const result = sut.getValue(mock.idBoard);
+        const mock: IChacheData = { id: 0, idBoard: '123', key: '12391341074101h190h19', token: 'obasibfipabf912gh9bc9gr01vb3' };
+        const result = sut.getValue(mock.id);
         expect(result).toEqual(mock);
     })
 
     it('Should return a null', () => {
         const sut = makeSut();
-        const mock: IChacheData = { idBoard: '1234', key: '12391341074101h190h19', token: 'obasibfipabf912gh9bc9gr01vb3' };
-        const result = sut.getValue(mock.idBoard);
+        const mock: IChacheData = { id: 1, idBoard: '123', key: '12391341074101h190h19', token: 'obasibfipabf912gh9bc9gr01vb3' };
+        const result = sut.getValue(mock.id);
         expect(result).toBeNull();
     })
 
     it('Should return a item', () => {
         const sut = makeSut();
-        const mock: IChacheData = { idBoard: '123', key: '12391341074101h190h19', token: 'obasibfipabf912gh9bc9gr01vb3' };
-        sut.delete(mock.idBoard);
-        expect(DbInMemory.lengthDatabase).toBe(0);
+        const mock: IChacheData = { id: 0, idBoard: '123', key: '12391341074101h190h19', token: 'obasibfipabf912gh9bc9gr01vb3' };
+        sut.delete(mock.id);
+        expect(DbInMemory.lenthDb()).toBe(0);
     })
 })

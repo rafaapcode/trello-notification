@@ -1,4 +1,19 @@
 "use strict";
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __objRest = (source, exclude) => {
+  var target = {};
+  for (var prop in source)
+    if (__hasOwnProp.call(source, prop) && exclude.indexOf(prop) < 0)
+      target[prop] = source[prop];
+  if (source != null && __getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(source)) {
+      if (exclude.indexOf(prop) < 0 && __propIsEnum.call(source, prop))
+        target[prop] = source[prop];
+    }
+  return target;
+};
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -49,7 +64,7 @@ var Notify = class {
     this.name = name;
   }
   notification() {
-    new Notification(this.name, { image: "../../assets/img/trello-logo.png" });
+    new Notification(this.name);
   }
   static verifyNotification() {
     if ("Notification" in window) {
@@ -114,6 +129,67 @@ var MainFeature = class {
   }
 };
 
+// src/base/bd.ts
+var BaseCacheDatabase = class {
+  lenthDb() {
+    throw new Error("Method not implemented.");
+  }
+  create(data) {
+    throw new Error("Method not implemented.");
+  }
+  delete(data) {
+    throw new Error("Method not implemented.");
+  }
+  getValue(data) {
+    throw new Error("Method not implemented.");
+  }
+};
+
+// src/features/repository/repository.ts
+var RepositoryDb = class extends BaseCacheDatabase {
+  constructor(databaseCache) {
+    super();
+    this.databaseCache = databaseCache;
+  }
+  lenthDb() {
+    return this.databaseCache.lenthDb();
+  }
+  create(data) {
+    this.databaseCache.create(data);
+  }
+  delete(id) {
+    this.databaseCache.delete(id);
+  }
+  getValue(id) {
+    return this.databaseCache.getValue(id);
+  }
+};
+
+// src/features/db/localStorage.ts
+var LocalStorageCache = class extends BaseCacheDatabase {
+  constructor() {
+    super();
+  }
+  lenthDb() {
+    return localStorage.length;
+  }
+  create(data) {
+    const _a = data, { id } = _a, cacheData = __objRest(_a, ["id"]);
+    localStorage.setItem(id.toString(), JSON.stringify(cacheData));
+  }
+  delete(id) {
+    localStorage.removeItem(id.toString());
+  }
+  getValue(id) {
+    const data = localStorage.getItem(id.toString());
+    if (data) {
+      return JSON.parse(data);
+    }
+    return null;
+  }
+};
+var localStorage_default = new LocalStorageCache();
+
 // src/index.ts
 var inputIdBoard = document.querySelector("#idBoard");
 var tokenBoard = document.querySelector("#tokenBoard");
@@ -122,6 +198,18 @@ var startbutton = document.querySelector("#startBtn");
 var stopbutton = document.querySelector("#stopBtn");
 var mensagem = document.querySelector(".mensagem");
 Notify.verifyNotification();
+var cacheRepository = new RepositoryDb(localStorage_default);
+var isCached = cacheRepository.getValue(0);
+if (isCached) {
+  const { idBoard, key, token } = isCached;
+  inputIdBoard.value = idBoard;
+  keyBoard.value = key;
+  tokenBoard.value = token;
+} else {
+  inputIdBoard.innerText = "";
+  keyBoard.innerText = "";
+  tokenBoard.innerText = "";
+}
 startbutton.addEventListener("click", () => {
   if (!inputIdBoard.value || !tokenBoard.value || !keyBoard.value) {
     mensagem.classList.remove("hidden");
@@ -142,6 +230,7 @@ startbutton.addEventListener("click", () => {
       mensagem.classList.add("error");
       mensagem.innerHTML = `${response}`;
     } else {
+      cacheRepository.create({ id: 0, idBoard: inputIdBoard.value, key: keyBoard.value, token: tokenBoard.value });
       mensagem.classList.remove("hidden");
       mensagem.classList.remove("error");
       mensagem.classList.add("ok");

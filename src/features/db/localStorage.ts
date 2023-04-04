@@ -1,23 +1,27 @@
 import BaseCacheDatabase from "../../base/bd";
 import { IChacheData } from "../../dtos/db.dto";
 
-class LocalStorage extends BaseCacheDatabase {
+class LocalStorageCache extends BaseCacheDatabase {
     constructor() {
         super();
     }
 
+    lenthDb() {
+        return localStorage.length;
+    }
+
     create(data: IChacheData): void {
-        const { idBoard, ...cacheData } = data;
-        localStorage.setItem(idBoard, JSON.stringify(cacheData));
+        const { id, ...cacheData } = data;
+        localStorage.setItem(id.toString(), JSON.stringify(cacheData));
     }
 
-    delete(id: string): void {
-        localStorage.removeItem(id);
+    delete(id: number): void {
+        localStorage.removeItem(id.toString());
     }
 
-    getValue(id: string): IChacheData | null{
-        const data = localStorage.getItem(id);
-        if(data) {
+    getValue(id: number): IChacheData | null {
+        const data = localStorage.getItem(id.toString());
+        if (data) {
             return JSON.parse(data);
         }
 
@@ -25,4 +29,4 @@ class LocalStorage extends BaseCacheDatabase {
     }
 }
 
-export default new LocalStorage();
+export default new LocalStorageCache();
