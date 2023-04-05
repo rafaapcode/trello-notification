@@ -15,3 +15,9 @@ export interface IChacheData {
     token: string;
     key: string;
 }
+
+export interface IFields { 
+    inputIdBoard: HTMLInputElement, 
+    keyBoard: HTMLInputElement, 
+    tokenBoard: HTMLInputElement 
+}

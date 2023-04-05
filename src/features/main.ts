@@ -1,6 +1,9 @@
 import RequestBoard from "./request/request";
 import hasNewCard from "./hasNewCard/hasNewCard";
 import Notify from "./createNotification/notification";
+import RepositoryDb from "./repository/repository";
+import LocalStorageCache from "../features/db/localStorage";
+import { IFields } from "../dtos/db.dto";
 
 export default class MainFeature {
     idBoard: string;
@@ -47,4 +50,18 @@ export default class MainFeature {
         return false;
     }
 
+    static getCredentials({ inputIdBoard, keyBoard, tokenBoard }: IFields) {
+        const cacheRepository = new RepositoryDb(LocalStorageCache);
+        const isCached = cacheRepository.getValue(0);
+        if (isCached) {
+            const { idBoard, key, token } = isCached;
+            inputIdBoard.value = idBoard;
+            keyBoard.value = key;
+            tokenBoard.value = token;
+        } else {
+            inputIdBoard.innerText = '';
+            keyBoard.innerText = '';
+            tokenBoard.innerText = '';
+        }
+    }
 }
