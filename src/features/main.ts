@@ -34,10 +34,10 @@ export default class MainFeature {
           prevValue = currentValue;
         }
       } else {
-        return response;
+        console.log(response) ;
       }
     } catch (err) {
-      return err;
+      console.log(err);
     } finally {
       setTimeout(this.start, 100);
     }
